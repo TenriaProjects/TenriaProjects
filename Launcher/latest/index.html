@@ -1,1 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Tenria Launcher</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: url('../assets/background.png') center/cover no-repeat, radial-gradient(circle at top, #1b2a4a, #0b0f1a);
+      color: white;
+      font-family: system-ui;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      width: 500px;
+      background: rgba(0,0,0,0.6);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    .tabs {
+      display: flex;
+      background: rgba(0,0,0,0.3);
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+    .tab {
+      flex: 1;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      font-size: 16px;
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+    .tab:hover {
+      color: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.05);
+    }
+    .tab.active {
+      color: white;
+      border-bottom-color: #3aa675;
+      background: rgba(58,166,117,0.1);
+    }
+    .content {
+      padding: 30px;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .time { 
+      font-size: 32px; 
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .title {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    .subtitle {
+      text-align: center;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      background: #3aa675;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background: #2d8a5f;
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    button.logout {
+      background: #d94343;
+      margin-top: 10px;
+    }
+    button.logout:hover:not(:disabled) {
+      background: #b33535;
+    }
+    button.small {
+      width: auto;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+    .hidden {
+      display: none;
+    }
+    select {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.3);
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+    select:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    select option {
+      background: #1a1a2e;
+      color: white;
+      padding: 10px;
+    }
+    .region-section {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+    }
+    
+    /* Mods styles */
+    .mod-item {
+      background: rgba(0,0,0,0.3);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+    .mod-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .mod-name {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .mod-status {
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .mod-status.installed {
+      background: rgba(58,166,117,0.2);
+      color: #3aa675;
+    }
+    .mod-status.not-installed {
+      background: rgba(255,165,0,0.2);
+      color: #ffa500;
+    }
+    .mod-description {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="play">Play</button>
+      <button class="tab" data-tab="mods">Mods</button>
+    </div>
 
+    <!-- Content -->
+    <div class="content">
+      <!-- Play Tab -->
+      <div class="tab-content active" id="play-tab">
+        <div id="time" class="time"></div>
+        <h2 class="title">Tenria V1</h2>
+        <div class="subtitle">Select Your Region</div>
+
+        <br>
+        <button id="login">Sign in with Microsoft</button>
+        <button id="logout" class="logout hidden">Log Out</button>
+        
+        <div class="region-section">
+          <label for="regionSelect">Region</label>
+          <select id="regionSelect" disabled>
+            <option value="as.tenria.org" selected>Asia</option>
+            <option value="eu.tenria.org" disabled>Europe</option>
+            <option value="na.tenria.org" disabled>North America</option>
+          </select>
+        </div>
+        
+        <button id="launch" disabled>Play Tenria</button>
+      </div>
+
+      <!-- Mods Tab -->
+      <div class="tab-content" id="mods-tab">
+        <h2 class="title">Mod Manager</h2>
+        <div class="subtitle">Install and manage Fabric mods</div>
+
+        <!-- Fabric Loader -->
+        <div class="mod-item">
+          <div class="mod-header">
+            <div class="mod-name">Fabric Loader</div>
+            <span class="mod-status not-installed" id="fabric-status">Not Installed</span>
+          </div>
+          <div class="mod-description">
+            Required mod loader for Fabric mods (v0.16.14)
+          </div>
+          <button class="small" id="install-fabric">Download & Install</button>
+        </div>
+
+        <!-- Fabric API -->
+        <div class="mod-item">
+          <div class="mod-header">
+            <div class="mod-name">Fabric API</div>
+            <span class="mod-status not-installed" id="fabric-api-status">Not Installed</span>
+          </div>
+          <div class="mod-description">
+            Core library required by most Fabric mods
+          </div>
+          <button class="small" id="install-fabric-api" disabled>Download & Install</button>
+        </div>
+
+        <!-- Mod Menu -->
+        <div class="mod-item">
+          <div class="mod-header">
+            <div class="mod-name">Mod Menu</div>
+            <span class="mod-status not-installed" id="modmenu-status">Not Installed</span>
+          </div>
+          <div class="mod-description">
+            Lists your installed mods
+          </div>
+          <button class="small" id="install-modmenu" disabled>Download & Install</button>
+        </div>
+
+        <!-- Sodium -->
+        <div class="mod-item">
+          <div class="mod-header">
+            <div class="mod-name">Sodium</div>
+            <span class="mod-status not-installed" id="sodium-status">Not Installed</span>
+          </div>
+          <div class="mod-description">
+            Performance optimization mod for better FPS
+          </div>
+          <button class="small" id="install-sodium" disabled>Download & Install</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
