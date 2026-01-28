@@ -1,9 +1,7 @@
-
 console.log('[Renderer] Script loaded');
 console.log('[Renderer] window.api available?', typeof window.api);
-console.log('[Renderer] window.api contents:', window.api);
 
-// Rest of your renderer.js code...// Tab switching
+// Tab switching
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     const tabName = tab.getAttribute('data-tab');
@@ -100,6 +98,8 @@ document.getElementById('launch').addEventListener('click', async () => {
 async function checkModStatuses() {
   try {
     const fabricInstalled = await window.api.checkFabricInstalled();
+    console.log('[Mods] Fabric installed?', fabricInstalled);
+    
     if (fabricInstalled) {
       document.getElementById('fabric-status').textContent = 'Installed';
       document.getElementById('fabric-status').classList.remove('not-installed');
@@ -116,6 +116,8 @@ async function checkModStatuses() {
     const mods = ['fabric-api', 'modmenu', 'sodium'];
     for (const mod of mods) {
       const installed = await window.api.checkModInstalled(mod);
+      console.log(`[Mods] ${mod} installed?`, installed);
+      
       if (installed) {
         document.getElementById(`${mod}-status`).textContent = 'Installed';
         document.getElementById(`${mod}-status`).classList.remove('not-installed');
