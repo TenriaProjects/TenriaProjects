@@ -1,0 +1,14 @@
+{
+  "news": [
+    {
+      "id": 1,
+      "title": "Welcome to Tenria!",
+      "date": "2026-01-27",
+      "image": null,
+      "description": "The launcher is now live. More news coming soon!",
+      "link": null
+    }
+  ],
+  "events": [],
+  "store": []
+}
